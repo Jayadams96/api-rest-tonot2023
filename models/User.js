@@ -1,38 +1,48 @@
 import mongoose from "mongoose";
+import bcryptjs from "bcryptjs";
 
 const { Schema, model } = mongoose;
 
-const userSchema = new mongoose.Schema({
-  
-  nombre:{
+const userSchema = new Schema({
+  nombre: {
     type: String,
-    required: true
+    required: true,
   },
-  apellido:{
+  apellido: {
     type: String,
-    required: true
+    required: true,
   },
-  edad:{
+  edad: {
     type: Number,
     min: 18,
-    max: 100
+    max: 100,
   },
   email: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-      lowercase: true,
-      index: { unique: true }
+    type: String,
+    required: true,
+    trim: true,
+    unique: true,
+    lowercase: true,
+    index: { unique: true },
   },
   contraseña: {
-      type: String,
-      required: true
-  },
-  creado: {
-    type: Date,
-    default: Date.now
+    type: String,
+    required: true,
   }
 });
 
-export const User = model('user', userSchema);
+userSchema.pre("save", async function (next) {
+  const user = this;
+
+  if (!user.isModified("contraseña")) return next();
+
+  try {
+    const salt = await bcryptjs.genSalt(10);
+    user.contraseña = await bcryptjs.hash(user.contraseña, salt);
+    next();
+  } catch (error) {
+    throw new Error("Fallo el hash de contraseña");
+  }
+});
+
+export const User = model("User", userSchema);
