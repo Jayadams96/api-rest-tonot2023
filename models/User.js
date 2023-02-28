@@ -45,4 +45,8 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+userSchema.methods.comparePassword = async function(clientPassword){
+  return await bcryptjs.compare(clientPassword, this.contraseña)
+}
+
 export const User = model("User", userSchema);

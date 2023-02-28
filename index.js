@@ -8,14 +8,19 @@ const app = express();
 
 connectDB();
 
-app.get("*", (req, res) => {
-  res.send("Página no encontrada");
-});
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use("/api/v1/auth", authRouter);
+
+//ej: carpeta public
+app.use(express.static('public'))
+
+app.get("*", (req, res) => {
+  res.send("Página no encontrada");
+});
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () =>
