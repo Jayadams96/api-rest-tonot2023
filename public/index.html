@@ -1,87 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Login | My App</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Contenido de la página -->
-    </div>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="row justify-content-center align-items-center vh-100">
-  <div class="col-sm-8 col-md-6 col-lg-4">
-    <div class="card p-4">
-      <div class="card-body">
-        <h3 class="text-center mb-4">Iniciar sesión</h3>
+  <title>login</title>
+  
+</head>
+<body>
 
-        <form action="#">
-          <div class="mb-3">
-            <label for="email" class="form-label">Correo electrónico</label>
-            <input type="email" class="form-control" id="email" name="email" value="jhonucash@hotmail.com" />
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              value="123123"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary w-100">
-            Iniciar sesión
-          </button>
+  <form id="form">
+    <input type="email" value="jhonucash@hotmail.com" id="email">
+    <input type="password" value="123123" id="password">
+    <button type="submit">Acceder</button>
+  </form>
 
-        </form>
-      </div>
+  <script>
+    const form = document.getElementById("form");
+    const password = document.getElementById("password");
+    const email = document.getElementById("email");
 
-<script>
-const form = document.getElementById('form')
-const password = document.getElementById('password')
-const email = document.getElementById('email')
-
-form.addEventListener('submit', async e=> {
-  e.preventDefault()
-  try {
-    console.log(password.value)
-    console.log(email.value)
-    fetch('/api/v1/auth/login', {
-      method: 'POST'
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password})
-    })
-  } catch (error) {
-    console.log(error)
-  }
-})
-
-</script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"
-      integrity="sha512-Sp/26lE5/bJ9SjnW63Q/LtN1jO84go6cn0KyKffyQqlaJ1fnrE+Lk57rFndZL8OZJfjzT6T06T+pwz08JxLnA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"
-      integrity="sha512-RuV7dJswkC/7gRuMjvcdx7bwy0+sEwLrVtu2oj+1D7BtzdGtBD/ttwVf8pBx0oFqfYpLw7yYZ+sfGKza9HAp2Q=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-  </body>
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const res = await fetch("/api/v1/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+          }),
+        });
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  </script>
+  
+</body>
 </html>

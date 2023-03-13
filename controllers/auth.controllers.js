@@ -41,6 +41,7 @@ export const register = async (req, res) => {
   }
 };
 
+//LOGIN
 export const login = async (req, res) => {
   try {
     const { email, contraseña } = req.body;
@@ -56,6 +57,7 @@ export const login = async (req, res) => {
     const { token, expiresIn } = generateToken(user.id);
 
     return res.json({ token, expiresIn });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Error de servidor" });

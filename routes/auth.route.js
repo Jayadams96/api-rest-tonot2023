@@ -17,7 +17,7 @@ router.post(
       .trim()
       .isEmail()
       .normalizeEmail(),
-    body("contraseña", "Minimo 6 caracteres").trim().isLength({ min: 6 }),
+    body("password", "Minimo 6 caracteres").trim().isLength({ min: 6 }),
     body("repassword", "No coinciden las contraseñas").custom(
       (value, { req }) => {
         if (value !== req.body.contraseña) {
@@ -31,14 +31,14 @@ router.post(
   register
 );
 
-router.get(
+router.post(
   "/login",
   [
     check("email", "Formato de email incorrecto")
       .trim()
       .isEmail()
       .normalizeEmail(),
-    check("contraseña", "Minimo 6 caracteres").trim().isLength({ min: 6 }),
+    check("password", "Minimo 6 caracteres").trim().isLength({ min: 6 }),
   ],
   validationResultExpress,
   login

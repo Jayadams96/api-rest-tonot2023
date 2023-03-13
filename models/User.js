@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcryptjs from "bcryptjs";
+import bcrypt from "bcrypt";
 
 const { Schema, model } = mongoose;
 
@@ -25,7 +25,7 @@ const userSchema = new Schema({
     lowercase: true,
     index: { unique: true },
   },
-  contraseña: {
+  password: {
     type: String,
     required: true,
   }
@@ -34,11 +34,11 @@ const userSchema = new Schema({
 userSchema.pre("save", async function (next) {
   const user = this;
 
-  if (!user.isModified("contraseña")) return next();
+  if (!user.isModified("password")) return next();
 
   try {
-    const salt = await bcryptjs.genSalt(10);
-    user.contraseña = await bcryptjs.hash(user.contraseña, salt);
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     next();
   } catch (error) {
     throw new Error("Fallo el hash de contraseña");
@@ -46,7 +46,7 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.comparePassword = async function(clientPassword){
-  return await bcryptjs.compare(clientPassword, this.contraseña)
+  return await bcrypt.compare(clientPassword, this.password)
 }
 
 export const User = model("User", userSchema);
